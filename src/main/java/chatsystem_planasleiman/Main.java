@@ -1,8 +1,11 @@
 package chatsystem_planasleiman;
 
 import java.io.IOException;
-
 import java.net.SocketException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import chatsystem_planasleiman.network.UDPMessage;
 import chatsystem_planasleiman.network.UDPSender;
@@ -11,9 +14,14 @@ import chatsystem_planasleiman.network.UDPServer;
 
 
 public class Main {
+
+    private static final Logger LOGGER = LogManager.getLogger(Main.class);
+
     public static final int port = 1789;
     private static int counter = 0;
     public static void main(String[] args) {
+        LOGGER.info("Starting chatsystem application");
+        
         try{
             UDPServer server = new UDPServer(port);
             server.addObserver(new UDPServer.Observer() {
