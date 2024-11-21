@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
+import chatsystem_planasleiman.controller.Controller;
 import chatsystem_planasleiman.network.UDPMessage;
 import chatsystem_planasleiman.network.UDPSender;
 import chatsystem_planasleiman.network.UDPServer;
@@ -27,27 +28,16 @@ public class Main {
         try{
             UDPServer server = new UDPServer(port);
 
-            server.addObserver(new UDPServer.Observer() {
-                @Override
-                public void handle(UDPMessage received){
-                    counter +=1;
-                    System.out.println("Num received: " + counter);
-                }    
-            });
-            
+            server.addObserver(msg -> Controller.handleContactDiscoveryMessage(msg));
             server.start();
+            
         } catch (SocketException e){
             System.err.println("Could not start UDPServer :" + e.getMessage());
             System.exit(1);
         }
+        
 
 
-        try {
-            UDPSender.sendLocalhost(port, "HELLO");
-            UDPSender.sendLocalhost(port, "HELLO2");
-            UDPSender.sendLocalhost(port, "HELLO3");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+       
     }  
 }
