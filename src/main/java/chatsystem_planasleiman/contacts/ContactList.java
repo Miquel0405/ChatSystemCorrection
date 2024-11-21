@@ -28,4 +28,10 @@ public class ContactList {
         }
         return false;
     }
+
+    public synchronized List<Contact> getAllContacts(){
+        // return defensive copy of the contacts to avoid anybody modifying it or doing unsynchronized access
+        return new ArrayList<>(this.contacts);
+    }
+
 }

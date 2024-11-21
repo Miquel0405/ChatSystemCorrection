@@ -5,6 +5,20 @@ import org.junit.jupiter.api.Test;
 
 
 public class ContactListTest {
+
+    interface FallibleCode{
+        void run() throws Exception;
+    }
+
+
+    private static void assertThrows(FallibleCode code){
+        try {
+            code.run();
+            throw new RuntimeException("Code should have thrown an exception");
+        } catch (Exception e) {
+            // OK, we expected an exception
+        }
+    }
     
     @Test
     void contactAdditionTest() throws ContactAlreadyExists{
@@ -27,12 +41,8 @@ public class ContactListTest {
         ContactList contacts = new ContactList();
         contacts.addUser("alice");
         assert contacts.hasUserName("alice");
-        try {
-            contacts.addUser("alice");
-            throw new RuntimeException("Expected ContactAlreadyExist Exeption");
-        } catch (Exception e) {
-            //Expected outcome
-        }
+        assertThrows(() -> contacts.addUser("alice"));
+        assertThrows(() -> contacts.addUser("alice"));
         
 
 
