@@ -49,6 +49,10 @@ public class UDPMessage {
         return "UDPMessage [content=" + content + ", origin=" + origin + "]";
     }
 
+    public String content() {
+        return this.content;
+    }
+
 }
 
 
