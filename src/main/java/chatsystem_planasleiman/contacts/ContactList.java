@@ -5,7 +5,16 @@ import java.util.List;
 
 public class ContactList {
 
+    public interface Observer{
+        void newContactAdded(Contact contact);
+        void nicknameChanged(Contact newContact, String previousNickname);
+    }
+    
+    
+    
     List<Contact> contacts = new ArrayList<>();
+
+    List<Observer> observers = new ArrayList<>();
     
     private static ContactList INSTANCE = new ContactList();
 
@@ -16,12 +25,21 @@ public class ContactList {
     private ContactList(){
     }
 
+    public synchronized void addObserver(Observer obs){
+        this.observers.add(obs);
+    }
+
+
+
     public synchronized void addUser(String username) throws ContactAlreadyExists{
         if (hasUserName(username)){
             throw new ContactAlreadyExists(username);
         }else {
             Contact contact = new Contact(username);
             contacts.add(contact);
+            for (Observer obs : observers){
+                obs.newContactAdded(contact);
+            }
         }
     }
 
