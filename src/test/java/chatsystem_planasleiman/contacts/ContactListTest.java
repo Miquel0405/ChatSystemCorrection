@@ -1,5 +1,6 @@
 package chatsystem_planasleiman.contacts;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -19,10 +20,16 @@ public class ContactListTest {
             // OK, we expected an exception
         }
     }
+
+    @BeforeEach
+    public void clearContactList(){
+        ContactList.getInstance().clear();
+    }
     
     @Test
     void contactAdditionTest() throws ContactAlreadyExists{
-        ContactList contacts = new ContactList();
+        ContactList contacts = ContactList.getInstance();
+        
 
         assert !contacts.hasUserName("alice");
         contacts.addUser("alice");
@@ -38,7 +45,9 @@ public class ContactListTest {
 
     @Test
     void contactDuplicationTest() throws ContactAlreadyExists{
-        ContactList contacts = new ContactList();
+        ContactList contacts = ContactList.getInstance();
+        
+
         contacts.addUser("alice");
         assert contacts.hasUserName("alice");
         assertThrows(() -> contacts.addUser("alice"));

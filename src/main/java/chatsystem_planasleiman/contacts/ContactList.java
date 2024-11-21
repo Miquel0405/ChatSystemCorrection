@@ -7,8 +7,13 @@ public class ContactList {
 
     List<Contact> contacts = new ArrayList<>();
     
+    private static ContactList INSTANCE = new ContactList();
 
-    public ContactList(){
+    public static ContactList getInstance(){
+        return INSTANCE;
+    }
+
+    private ContactList(){
     }
 
     public synchronized void addUser(String username) throws ContactAlreadyExists{
@@ -32,6 +37,10 @@ public class ContactList {
     public synchronized List<Contact> getAllContacts(){
         // return defensive copy of the contacts to avoid anybody modifying it or doing unsynchronized access
         return new ArrayList<>(this.contacts);
+    }
+
+    public synchronized void clear(){
+        this.contacts.clear();
     }
 
 }
