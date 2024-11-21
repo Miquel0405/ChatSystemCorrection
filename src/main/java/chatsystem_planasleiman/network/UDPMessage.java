@@ -53,6 +53,10 @@ public class UDPMessage {
         return this.content;
     }
 
+    public InetAddress origin() {
+        return this.origin;
+    }
+
 }
 
 

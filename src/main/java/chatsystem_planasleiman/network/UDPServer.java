@@ -7,7 +7,13 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 public class UDPServer extends Thread {
+
+    private static final Logger LOGGER = LogManager.getLogger(UDPServer.class);
 
     /*Interface that observers of the UDOServer must implement */
     public interface Observer {
@@ -43,6 +49,7 @@ public class UDPServer extends Thread {
                 String received = new String(packet.getData(), 0, packet.getLength());
                 UDPMessage message = new UDPMessage(received, packet.getAddress());
 
+                LOGGER.trace("Received on port " + socket.getLocalPort() + ": " + message.content() + " from " + message.origin());
                 synchronized (this.observers){
                     for (Observer obs : this.observers){
                         obs.handle(message);
